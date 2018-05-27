@@ -24,10 +24,11 @@ io.on('connection', socket => {
   console.log('New client connected')
   
   socket.on('bulletin subscription', (userRequest) => {
+    console.log(userRequest);
     let user_request = JSON.parse(userRequest);
     if(user_request.token && user_request.bulletins) {
       var options = {
-        url: 'https://mycampusdock.com/verify-chat',
+        url: 'http://127.0.0.1:65534/verify-chat',
         headers: {
           'x-access-token': user_request.token
         }
@@ -38,14 +39,13 @@ io.on('connection', socket => {
             if(body && body.error == false){
               socket.userEmail = body.data;
               let i = 0;
+              let toSend = {};
               for(i=0;i<user_request.bulletins.length;i++) {
                 socket.join(user_request.bulletins[i]);
+                console.log(globalManagedMemory[user_request.bulletins[i]]);
+                toSend[user_request.bulletins[i]] = globalManagedMemory[user_request.bulletins[i]] != undefined ? globalManagedMemory[user_request.bulletins[i]] : [];
               }
-              for(i=0;i<user_request.bulletins.length;i++) {
-                let toSend = {bulletin: user_request.bulletins[i], data: globalManagedMemory[user_request.bulletins[i]]};
-                console.log(toSend)
-                io.to(user_request.bulletins[i]).emit('message in bulletin', toSend);
-              }
+              io.to(socket.id).emit('am i connected', JSON.stringify({ error: false, data: toSend}) );
               console.log('handshake complete');
             } else {
               console.log('handshake failed', body);
@@ -58,8 +58,6 @@ io.on('connection', socket => {
 
   socket.on('send to bulletin', (userRequest) => {
     let request = JSON.parse(userRequest);
-    console.log(socket.rooms);
-    
     if(socket.rooms.hasOwnProperty(request.bulletin)) {
       console.log('can send: '+socket.userEmail);
       if (globalManagedMemory[request.bulletin] != undefined) {
