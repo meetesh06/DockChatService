@@ -28,7 +28,7 @@ io.on('connection', socket => {
     let user_request = JSON.parse(userRequest);
     if(user_request.token && user_request.bulletins) {
       var options = {
-        url: 'http://127.0.0.1:65534/verify-chat',
+        url: 'https://mycampusdock.com/verify-chat',
         headers: {
           'x-access-token': user_request.token
         }
