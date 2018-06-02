@@ -159,9 +159,8 @@ MongoClient.connect(url, {
         });
 
         socket.on('synchronize', (userRequest) => {
-            let user_request = {};
             try {
-                user_request = JSON.parse(userRequest);
+                userRequest = JSON.parse(userRequest);
                 if (socket.isAuthorized) {
 
                     if (socket.rooms.hasOwnProperty(userRequest.bulletin)) {
