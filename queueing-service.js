@@ -35,7 +35,7 @@ Queue.prototype.getMessagesDB = function(key, callback) {
     .project({ [key]: 1 })
     .toArray((err, data) => {
       if (err) return callback([]);
-      return callback(data[0][key]);
+      return callback(data[0] !== undefined ? data[0][key] : [] );
     });
   
 }
@@ -63,7 +63,6 @@ Queue.prototype.sync = function() {
   // checking all messages of a nested object is a bad idea, let db driver take care of duplicate messages
   if (this.updating == false) {
     if (JSON.stringify(this.toSend) === JSON.stringify(this.queue)){ 
-      console.log('no changes');
       return;
     }
     this.toSend = JSON.parse(JSON.stringify(this.queue));
