@@ -106,7 +106,8 @@ MongoClient.connect(url, { useNewUrlParser: true } , function(err, client) {
       }
       if(socket.rooms.hasOwnProperty(request.bulletin)) {
         let now = new Date();
-        queue.addMessage(request.bulletin, { email: socket.userEmail, message: request.message, timestamp: now})
+        let longTime = Date.now();
+        queue.addMessage(request.bulletin, { email: socket.userEmail, message: request.message, timestamp: now, created_on:longTime})
         io.to(request.bulletin).emit('new_message_in_bulletin', JSON.stringify({ error: false, email: socket.userEmail, bulletin: request.bulletin, data: request.message, timestamp: now}));
       } else {
         io.to(socket.id).emit('feedback', JSON.stringify({ error: true, mssg: 'auth failed'}) );
