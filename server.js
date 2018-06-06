@@ -146,7 +146,8 @@ MongoClient.connect(url, {
                 })
                 io.to(request.bulletin).emit('new_message_in_bulletin', JSON.stringify({
                     error: false,
-                    email: socket.userName,
+                    email: socket.userEmail,
+                    username: socket.userName,
                     bulletin: request.bulletin,
                     data: request.message,
                     timestamp: now
