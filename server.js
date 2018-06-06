@@ -73,7 +73,7 @@ MongoClient.connect(url, {
                         }
                         body = JSON.parse(body);
                         if (body && body.error == false) {
-                            console.log("Body : "+body);
+                            console.log("Body : "+JSON.stringify(body));
                             socket.userEmail = body.data;
                             socket.userName = body.name;
                             let i = 0;
