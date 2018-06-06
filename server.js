@@ -14,10 +14,6 @@ const port = 4001
 const url = 'mongodb://dock:D2ckD2ck@ds141870.mlab.com:41870/chat-server';
 const DB_NAME = 'chat-server';
 
-
-
-
-
 const app = express()
 
 // our server instance
@@ -77,6 +73,7 @@ MongoClient.connect(url, {
                         }
                         body = JSON.parse(body);
                         if (body && body.error == false) {
+                            console.log("Body : "+body);
                             socket.userEmail = body.data;
                             socket.userName = body.name;
                             let i = 0;
@@ -137,6 +134,7 @@ MongoClient.connect(url, {
             if (socket.rooms.hasOwnProperty(request.bulletin)) {
                 let now = new Date();
                 let longTime = Date.now();
+                let message = 
                 queue.addMessage(request.bulletin, {
                     email: socket.userEmail,
                     username: socket.userName,
@@ -196,7 +194,7 @@ MongoClient.connect(url, {
                     }
                 }
             } catch (e) {
-                console.log('Syncronised :'+e);
+                console.log('Syncronised :' + e);
             }
         });
 
