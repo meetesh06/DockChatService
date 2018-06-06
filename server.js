@@ -139,13 +139,14 @@ MongoClient.connect(url, {
                 let longTime = Date.now();
                 queue.addMessage(request.bulletin, {
                     email: socket.userEmail,
+                    username: socket.userName,
                     message: request.message,
                     timestamp: now,
                     created_on: longTime
                 })
                 io.to(request.bulletin).emit('new_message_in_bulletin', JSON.stringify({
                     error: false,
-                    email: socket.userEmail,
+                    email: socket.userName,
                     bulletin: request.bulletin,
                     data: request.message,
                     timestamp: now
